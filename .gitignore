@@ -1,0 +1,17 @@
+# Local secrets and generated runtime state
+gateway-config.json
+backend/__pycache__/
+work/
+
+# Superseded V1 prototype exports; V2 is cad/stl_v2/.
+cad/stl/
+outputs/walle-a1-prototype.3mf
+outputs/walle-project-package.zip
+outputs/walle-bambu-import/
+outputs/walle-bambu-import-clean/
+outputs/
+result.json
+
+# Editor and operating system files
+.DS_Store
+Thumbs.db

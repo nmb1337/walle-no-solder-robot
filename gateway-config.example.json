@@ -1,0 +1,24 @@
+{
+  "profiles": [
+    {
+      "name": "我的 GPT 中转站",
+      "base_url": "https://relay.example.com/v1",
+      "api_key": "在网页里填写，不要提交到代码仓库",
+      "model": "填写中转站显示的模型字符串",
+      "protocol": "responses",
+      "supports_image": true,
+      "supports_audio": false
+    },
+    {
+      "name": "DeepSeek",
+      "base_url": "https://api.deepseek.com/v1",
+      "api_key": "",
+      "model": "deepseek-chat",
+      "protocol": "chat_completions",
+      "supports_image": false,
+      "supports_audio": false
+    }
+  ],
+  "active_profile": "我的 GPT 中转站",
+  "settings": { "screenshot_enabled": false, "screenshot_interval": 30 }
+}
