@@ -30,8 +30,11 @@ change the CAD parameter, re-export only that part, and repeat.
    nuts; never drill the servo shaft or glue a horn permanently.
 3. Bolt the base plate to the body with four M3 x 14 screws. The body floor
    and base mounting holes must be aligned before electronics are installed.
-4. Fit the two N20 motors and rubber wheels. The wheel must be fully seated on
-   the 3 mm D shaft, turn freely by hand, and not rub the PETG side cover.
+4. Put each N20 clamp on the base's outer M3 pair: clamp centres are
+   `x = -80 mm` and `x = +80 mm`, with the two holes `18 mm` apart along Y.
+   Use M3 x 10 screws and lock nuts. Fit the rubber wheels after the motors.
+   Each wheel must be fully seated on the 3 mm D shaft, turn freely by hand,
+   and not rub the PETG side cover.
 5. Fit the rear ball caster last. With the robot on a flat table, both drive
    wheels and the caster must touch the surface; the body/base must be at
    least 3 mm above the table.

@@ -5,6 +5,7 @@ work/
 
 # Superseded V1 prototype exports; V2 is cad/stl_v2/.
 cad/stl/
+cad/generate_models.py
 outputs/walle-a1-prototype.3mf
 outputs/walle-project-package.zip
 outputs/walle-bambu-import/

@@ -51,6 +51,9 @@ module base_plate() {
         rounded_box(178, 112, 5, 10);
         for (x = [-76, 76], y = [-43, 43])
             translate([x, y, 0]) m3_hole();
+        // N20 motor-clamp pairs. Clamp centres are x = +/-80, y = 0.
+        for (x = [-80, 80], y = [-9, 9])
+            translate([x, y, 0]) m3_hole();
         // Rear ball-caster plate. M2 slots allow small seller variations.
         for (x = [-6, 6])
             translate([x, -43, 0]) m2_hole();

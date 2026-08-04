@@ -6,6 +6,7 @@
 | --- | --- | --- |
 | A1 build volume | Pass | All V2 STLs are <= 256 mm; largest body is 184 x 118 x 100 mm. |
 | Battery cavity | Conditional | Tray inner envelope is 82 x 48 x 24 mm; buy pack <= 80 x 46 x 22 mm. |
+| Motor-clamp mounting | Pass by coordinate | Base pairs at x = +/-80, y = +/-9 match the N20 clamp's 18 mm M3 pattern. |
 | Camera | Pass by envelope | Mount cavity is 36.9 x 25.1 mm for a 35.7 x 23.9 mm board. |
 | Audio board | Pass by envelope | Cradle has 0.8 mm radial assembly allowance for the 58 mm board. |
 | Servos | Conditional | MG90S envelope is modelled. Horn adapter and real horn alignment need a dry fit. |
