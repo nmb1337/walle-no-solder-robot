@@ -10,14 +10,16 @@ Print the V2 parts in PETG, 0.20 mm layer height, four walls and 30% gyroid:
 
 1. `walle_n20_motor_clamp.stl` x2
 2. `walle_battery_tray.stl` x1
-3. `walle_audio_core_cradle.stl` x1
-4. `walle_ov2640_camera_mount.stl` x1
+3. `walle_touch_lcd_cradle.stl` x1 (the old audio-core filename is a
+   compatibility export)
+4. `walle_ov5640_camera_mount.stl` x1 (the old OV2640 filename is a
+   compatibility export)
 5. `walle_mg90s_servo_cradle.stl` x2 and `walle_shoulder_mount.stl` x2
 6. `walle_mg90s_horn_adapter.stl` x6 and `walle_ball_caster_plate.stl` x1
 7. `walle_base_plate.stl` x1
 
 Verify with calipers: N20 body must enter the clamp without force; the battery
-must have at least 1 mm free space on each side; the audio board must sit in
+must have at least 1 mm free space on each side; the touch-LCD board must sit in
 its cradle with the USB-C and FPC connector accessible. A failed fit means
 change the CAD parameter, re-export only that part, and repeat.
 
@@ -42,14 +44,21 @@ change the CAD parameter, re-export only that part, and repeat.
 ## 3. Make the power harness with pre-made parts
 
 1. Battery XT30 positive -> 5 A fuse -> lever/screw-terminal distribution.
-2. Distribution -> 5 V / 10 A buck input and 6 V / 3 A buck input.
+2. Distribution -> a fixed 5 V / 5-8 A buck input and a fixed 6 V / 3 A buck
+   input. Each listing must explicitly accept the full 2S range of 6.0-8.4 V.
 3. 5 V buck -> PCA9685 servo power terminal, ESP32 DevKitC 5 V/VIN, and the
-   ESP32-S3 audio board through its USB-C lead.
+   Waveshare touch-LCD board through its USB-C lead. Connect the bought
+   speaker to the board's MX1.25 speaker header.
 4. 6 V buck -> TB6612 `VM` and `GND` only.
 5. Join every ground: battery, both buck converters, TB6612, ESP32, PCA9685
-   and audio board. Do not connect the 6 V motor rail to any ESP32 pin.
+   and touch-LCD board. Do not connect the 6 V motor rail to any ESP32 pin.
 
 Leave the battery unplugged until the multimeter check in the next section.
+
+The XT30 pigtail, fuse holder, distribution block, both buck converters and
+their terminals are purchase gates, not optional wiring details. Do not cut,
+strip, solder, or twist leads. Every battery-side item must arrive with its
+matching plug or a screw/lever terminal.
 
 ## 4. Signal wiring and bench test
 
@@ -62,8 +71,8 @@ Use the pin map in `firmware/README.md`. Power only from USB initially.
 3. Power PCA9685 from the 5 V buck and test every servo independently before
    attaching the head/arms. Adjust the neutral angle in firmware only after
    confirming the safe physical range.
-4. Connect the OV2640 FPC cable with power off. Then install the ESP32-S3
-   audio board, speaker and USB-C power lead. Take one camera snapshot before
+4. Connect the supplied OV5640 FPC cable with power off. Then install the
+   touch-LCD board, speaker and USB-C power lead. Take one camera snapshot before
    enabling automatic screenshots.
 
 ## 5. Close the robot only after these tests pass

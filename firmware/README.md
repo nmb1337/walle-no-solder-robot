@@ -19,9 +19,17 @@ PCA9685 servo board, and stops both motors after one second without a command.
 | GND | GND |
 
 PCA9685: ESP32 `GPIO 21 -> SDA`, `GPIO 22 -> SCL`, common GND, and a separate
-regulated `5 V / 8 A or higher` rail on its servo power terminal. Motors use
-the protected 2S battery at `VM`; the ESP32 and PCA9685 must share GND with
-that battery but never draw servo current through the ESP32 USB port.
+regulated `5 V / 5-8 A` rail on its servo power terminal. Use the two regulated
+rails below; do not connect a 2S pack directly to the 6 V motors or the servo
+rail:
+
+- Protected 2S pack -> fixed `6.0 V / 3 A` buck -> TB6612 `VM` and the two N20 motors.
+- Protected 2S pack -> fixed `5.0 V / 5-8 A` buck -> PCA9685 servo V+,
+  ESP32 DevKitC VIN/5V, and the ESP32-S3 board through its USB-C input.
+- Join all logic and motor grounds at the power distribution block.
+
+Use screw terminals or pre-crimped leads so no soldering is required. Never
+draw servo current through the ESP32 USB port.
 
 The sketch supports Arduino-ESP32 2.x and 3.x LEDC APIs. Gateway events use
 ASCII values (`left`, `right`, `center`, `up`, `down`, `raise`, `stow`) so the

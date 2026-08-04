@@ -1,31 +1,127 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>瓦力控制台</title><link rel="stylesheet" href="/assets/styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>瓦力控制台</title>
+  <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body>
-  <header class="topbar"><div class="brand"><span class="brand-mark">W</span><div><strong>瓦力控制台</strong><small>WALL-E LOCAL GATEWAY</small></div></div><div class="top-actions"><span id="service-pill" class="status-pill"><i></i> 网关检查中</span><button class="icon-btn" id="refresh-btn" title="刷新状态">↻</button></div></header>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">W</span>
+      <div><strong>瓦力控制台</strong><small>WALL-E LOCAL GATEWAY</small></div>
+    </div>
+    <div class="top-actions">
+      <span id="service-pill" class="status-pill"><i></i>网关检查中</span>
+      <button class="icon-btn" id="refresh-btn" title="刷新状态" aria-label="刷新状态">↻</button>
+    </div>
+  </header>
+
   <main class="layout">
     <section class="main-column">
-      <div class="section-heading"><div><span class="eyebrow">视觉</span><h1>摄像头画面</h1></div><div class="camera-tools"><span id="camera-status" class="tiny-status"><i></i> 摄像头开启</span><button id="snapshot-btn" class="button button-yellow">拍一张</button></div></div>
-      <div class="camera-frame"><img id="camera-image" alt="瓦力摄像头预览"><div class="camera-overlay"><span>CORE S3 / 640×480</span><span id="snapshot-time">等待画面</span></div></div>
-      <div class="telemetry-row"><div><span>设备</span><strong id="device-status">在线</strong></div><div><span>电量</span><strong id="battery">87%</strong></div><div><span>Wi-Fi</span><strong id="wifi">-48 dBm</strong></div><div><span>接口延迟</span><strong id="latency">--</strong></div></div>
+      <div class="section-heading">
+        <div><span class="eyebrow">视觉</span><h1>摄像头画面</h1></div>
+        <div class="camera-tools">
+          <span id="camera-status" class="tiny-status"><i></i>摄像头开启</span>
+          <button id="snapshot-btn" class="button button-yellow">拍一张</button>
+        </div>
+      </div>
+      <div class="camera-frame">
+        <img id="camera-image" alt="瓦力摄像头预览">
+        <div class="camera-overlay"><span>ESP32-S3 / 640×360</span><span id="snapshot-time">等待画面</span></div>
+      </div>
+      <div class="telemetry-row">
+        <div><span>设备</span><strong id="device-status">在线</strong></div>
+        <div><span>电量</span><strong id="battery">87%</strong></div>
+        <div><span>Wi-Fi</span><strong id="wifi">-48 dBm</strong></div>
+        <div><span>接口延迟</span><strong id="latency">--</strong></div>
+      </div>
 
-      <div class="section-heading compact"><div><span class="eyebrow">对话</span><h2>和瓦力说话</h2></div><span id="provider-label" class="provider-label">演示模式</span></div>
-      <div class="chat-panel"><div class="messages" id="messages"><div class="message bot"><span class="avatar">W</span><p>你好，我是瓦力。配置供应商后，我可以通过摄像头看东西、回答问题并执行动作。</p></div></div><div class="composer"><textarea id="chat-input" rows="2" placeholder="输入一句话，例如：看看桌上有什么"></textarea><div class="composer-actions"><button id="mic-btn" class="icon-btn large" title="录音">♩</button><button id="analyze-btn" class="button button-dark">看图回答</button><button id="send-btn" class="button button-yellow">发送</button></div></div></div>
+      <div class="section-heading compact">
+        <div><span class="eyebrow">对话</span><h2>和瓦力说话</h2></div>
+        <span id="provider-label" class="provider-label">演示模式</span>
+      </div>
+      <div class="chat-panel">
+        <div class="messages" id="messages">
+          <div class="message bot"><span class="avatar">W</span><p>你好，我是瓦力。配置供应商后，我可以通过摄像头看东西、回答问题并执行动作。</p></div>
+        </div>
+        <div class="composer">
+          <textarea id="chat-input" rows="2" placeholder="输入一句话，例如：看看桌上有什么"></textarea>
+          <div class="composer-actions">
+            <button id="mic-btn" class="icon-btn large" title="录音并转写" aria-label="录音并转写">●</button>
+            <button id="analyze-btn" class="button button-dark">看图回答</button>
+            <button id="send-btn" class="button button-yellow">发送</button>
+          </div>
+        </div>
+      </div>
 
-      <div class="section-heading compact"><div><span class="eyebrow">设备动作</span><h2>让瓦力动起来</h2></div><span id="move-label" class="muted">停止</span></div>
-      <div class="motion-grid"><button data-move="forward" class="move up">↑<small>前进</small></button><button data-move="left" class="move">←<small>左转</small></button><button data-move="stop" class="move stop">■<small>停止</small></button><button data-move="right" class="move">→<small>右转</small></button><button data-move="back" class="move down">↓<small>后退</small></button></div>
-      <div class="action-row"><div><label>头部</label><div class="segmented"><button data-head="左看">左看</button><button data-head="中立" class="selected">中立</button><button data-head="右看">右看</button></div></div><div><label>手臂</label><div class="segmented"><button data-arm="抬起">抬起</button><button data-arm="收回" class="selected">收回</button></div></div></div>
+      <div class="section-heading compact">
+        <div><span class="eyebrow">设备动作</span><h2>让瓦力动起来</h2></div>
+        <span id="move-label" class="muted">停止</span>
+      </div>
+      <div class="motion-grid">
+        <button data-move="forward" class="move up" aria-label="前进">↑<small>前进</small></button>
+        <button data-move="left" class="move" aria-label="左转">←<small>左转</small></button>
+        <button data-move="stop" class="move stop" aria-label="停止">■<small>停止</small></button>
+        <button data-move="right" class="move" aria-label="右转">→<small>右转</small></button>
+        <button data-move="back" class="move down" aria-label="后退">↓<small>后退</small></button>
+      </div>
+      <div class="action-row">
+        <div><label>头部</label><div class="segmented">
+          <button data-head="左看">左看</button><button data-head="中立" class="selected">中立</button><button data-head="右看">右看</button>
+        </div></div>
+        <div><label>手臂</label><div class="segmented"><button data-arm="抬起">抬起</button><button data-arm="收回" class="selected">收回</button></div></div>
+      </div>
     </section>
+
     <aside class="side-column">
-      <section class="side-section"><div class="section-heading compact"><div><span class="eyebrow">连接</span><h2>设备状态</h2></div><span class="live-dot">LIVE</span></div><div class="status-list"><div><span>核心板</span><strong>CoreS3</strong></div><div><span>驱动板</span><strong>ESP32 + TB6612FNG</strong></div><div><span>音频</span><strong id="audio-state">空闲</strong></div></div></section>
-      <section class="side-section"><div class="section-heading compact"><div><span class="eyebrow">智能服务</span><h2>供应商</h2></div><button id="save-provider" class="button small">保存</button></div><label class="field-label">名称<input id="provider-name" placeholder="例如：我的中转站"></label><label class="field-label">Base URL<input id="provider-url" placeholder="https://your-relay.example/v1"></label><label class="field-label">API Key<input id="provider-key" type="password" placeholder="只保存在此电脑"></label><label class="field-label">模型名<input id="provider-model" placeholder="填写中转站显示的模型字符串"></label><div class="field-grid"><label class="field-label">协议<select id="provider-protocol"><option value="responses">Responses</option><option value="chat_completions">Chat Completions</option></select></label><label class="field-label">当前配置<select id="provider-select"><option>演示模式</option></select></label></div><div class="checks"><label><input id="supports-image" type="checkbox" checked> 支持图片</label><label><input id="supports-audio" type="checkbox"> 支持音频</label></div><p class="hint">不会读取 Codex 登录态或 CC Switch 私密文件。</p></section>
-      <section class="side-section"><div class="section-heading compact"><div><span class="eyebrow">自动化</span><h2>自动截图</h2></div><label class="switch"><input id="auto-snapshot" type="checkbox"><span></span></label></div><div class="range-line"><label>间隔</label><input id="snapshot-interval" type="range" min="10" max="120" value="30"><output id="interval-value">30 秒</output></div><div class="toggle-list"><label>麦克风<input id="mic-toggle" type="checkbox" checked><span class="toggle"></span></label><label>摄像头<input id="camera-toggle" type="checkbox" checked><span class="toggle"></span></label><label>扬声器<input id="speaker-toggle" type="checkbox" checked><span class="toggle"></span></label></div></section>
-      <section class="side-section diagnostics"><div class="section-heading compact"><div><span class="eyebrow">网关</span><h2>运行信息</h2></div></div><div class="status-list"><div><span>模式</span><strong>局域网直连</strong></div><div><span>AI 请求</span><strong id="request-status">等待请求</strong></div><div><span>余额提示</span><strong class="muted">由中转站返回</strong></div></div><a class="docs-link" href="/README.md" target="_blank">查看接线与配置说明 →</a></section>
+      <section class="side-section">
+        <div class="section-heading compact"><div><span class="eyebrow">连接</span><h2>设备状态</h2></div><span class="live-dot">LIVE</span></div>
+        <div class="status-list">
+          <div><span>主控板</span><strong>ESP32-S3-Touch-LCD-3.5-C</strong></div>
+          <div><span>驱动板</span><strong>ESP32 + TB6612FNG</strong></div>
+          <div><span>音频</span><strong id="audio-state">空闲</strong></div>
+        </div>
+      </section>
+
+      <section class="side-section">
+        <div class="section-heading compact"><div><span class="eyebrow">智能服务</span><h2>供应商</h2></div><button id="save-provider" class="button small">保存</button></div>
+        <label class="field-label">名称<input id="provider-name" placeholder="例如：我的中转站"></label>
+        <label class="field-label">Base URL<input id="provider-url" placeholder="https://your-relay.example/v1"></label>
+        <label class="field-label">API Key<input id="provider-key" type="password" placeholder="留空表示不修改本地密钥"></label>
+        <label class="field-label">模型名<input id="provider-model" placeholder="填写中转站显示的模型字符串"></label>
+        <label class="field-label">本地代理<input id="provider-proxy" placeholder="http://127.0.0.1:7890"></label>
+        <div class="field-grid">
+          <label class="field-label">协议<select id="provider-protocol"><option value="responses">Responses</option><option value="chat_completions">Chat Completions</option></select></label>
+          <label class="field-label">当前配置<select id="provider-select"><option value="">演示模式</option></select></label>
+        </div>
+        <div class="checks"><label><input id="supports-image" type="checkbox" checked>支持图片</label><label><input id="supports-audio" type="checkbox">支持音频</label></div>
+        <p class="hint">网关只读取这里的配置，不会读取 Codex 登录态或 CC Switch 私密文件。</p>
+      </section>
+
+      <section class="side-section">
+        <div class="section-heading compact"><div><span class="eyebrow">自动化</span><h2>自动截图</h2></div><label class="switch"><input id="auto-snapshot" type="checkbox"><span></span></label></div>
+        <div class="range-line"><label>间隔</label><input id="snapshot-interval" type="range" min="10" max="120" value="30"><output id="interval-value">30 秒</output></div>
+        <div class="toggle-list">
+          <label>麦克风<input id="mic-toggle" type="checkbox" checked><span class="toggle"></span></label>
+          <label>摄像头<input id="camera-toggle" type="checkbox" checked><span class="toggle"></span></label>
+          <label>扬声器<input id="speaker-toggle" type="checkbox" checked><span class="toggle"></span></label>
+        </div>
+      </section>
+
+      <section class="side-section diagnostics">
+        <div class="section-heading compact"><div><span class="eyebrow">网关</span><h2>运行信息</h2></div></div>
+        <div class="status-list">
+          <div><span>模式</span><strong>局域网直连</strong></div>
+          <div><span>AI 请求</span><strong id="request-status">等待请求</strong></div>
+          <div><span>余额提示</span><strong class="muted">由中转站返回</strong></div>
+        </div>
+        <a class="docs-link" href="/README.md" target="_blank">查看接线与配置说明 →</a>
+      </section>
     </aside>
   </main>
-  <div id="toast" class="toast" role="status"></div><script src="/assets/app.js"></script>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="/assets/app.js"></script>
 </body>
 </html>

@@ -7,11 +7,11 @@
 | A1 build volume | Pass | All V2 STLs are <= 256 mm; largest body is 184 x 118 x 100 mm. |
 | Battery cavity | Conditional | Tray inner envelope is 82 x 48 x 24 mm; buy pack <= 80 x 46 x 22 mm. |
 | Motor-clamp mounting | Pass by coordinate | Base pairs at x = +/-80, y = +/-9 match the N20 clamp's 18 mm M3 pattern. |
-| Camera | Pass by envelope | Mount cavity is 36.9 x 25.1 mm for a 35.7 x 23.9 mm board. |
-| Audio board | Pass by envelope | Cradle has 0.8 mm radial assembly allowance for the 58 mm board. |
+| Camera | Conditional | The printed mount has a 30 x 30 mm carrier cavity for a nominal 28 x 28 mm OV5640 carrier. The supplied kit camera must be measured and its FPC orientation checked first. |
+| Display / audio board | Pass by envelope | The touch-LCD cradle has a 97.11 x 65.67 mm inner opening for the declared 95.11 x 63.67 x 14.10 mm Waveshare case. |
 | Servos | Conditional | MG90S envelope is modelled. Horn adapter and real horn alignment need a dry fit. |
 | Motor driver | Conditional | TB6612 is valid only when N20 stall current is <= 0.8 A. |
-| Power | Pass after correction | Separate 6 V motor and 5 V / 10 A servo rails prevent N20 over-voltage and servo brownout. |
+| Power | Conditional | Separate 6 V motor and 5 V / 5-8 A servo rails are required, but no power candidate is approved until its listing proves 6.0-8.4 V input coverage and the required continuous output current. |
 | Drive stability | Conditional | A rear 15 mm ball caster is mandatory; do not run a two-contact-point chassis. |
 
 ## Required physical gates

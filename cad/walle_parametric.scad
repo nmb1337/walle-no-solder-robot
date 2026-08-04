@@ -1,7 +1,7 @@
 // WALLE no-solder medium robot, millimetres.
-// Target hardware: 42 mm N20 rubber wheels, MG90S 180-degree servos,
-// Waveshare ESP32-S3-AUDIO-Board (diameter 58 mm, height 48.8 mm),
-// and a 24-pin OV2640 camera module. Every printed part fits a Bambu A1.
+// Target hardware: 43 mm N20 rubber wheels, MG90S 180-degree servos,
+// Waveshare ESP32-S3-Touch-LCD-3.5-C (95.11 x 63.67 x 14.10 mm case,
+// with OV5640 camera) and MG90S servos. Every printed part fits a Bambu A1.
 
 $fn = 64;
 
@@ -14,26 +14,28 @@ head_h = 76;
 wall = 3;
 clearance = 0.8;
 
-drive_wheel_d = 42;
+drive_wheel_d = 43;
 drive_wheel_w = 19;
 drive_axle_d = 3;               // N20 3 mm D-shaft
 wheel_center_z = drive_wheel_d / 2 + 4;
+motor_axis_z = wheel_center_z;  // N20 shaft and wheel bore must be coaxial
 
 mg90s_w = 22.8;
 mg90s_d = 12.2;
 mg90s_h = 28.5;
 
-audio_core_d = 58;
-audio_core_h = 48.8;
-camera_pcb_w = 35.7;            // Waveshare OV2640 Camera Board
-camera_pcb_h = 23.9;            // 24-pin, 0.5 mm FPC connector
+touch_lcd_w = 95.11;            // official case outline, mm
+touch_lcd_d = 63.67;
+touch_lcd_h = 14.10;
+camera_pcb_w = 28;               // OV5640 module envelope; verify seller sample
+camera_pcb_h = 28;
 
 // 2S 1800 mAh pack envelope. Smaller packs use foam and hook-and-loop strap.
 battery_bay_w = 82;
 battery_bay_d = 48;
 battery_bay_h = 24;
 
-part = "assembly_preview";
+part = "none";
 
 module rounded_box(w, d, h, r = 8) {
     linear_extrude(height = h, center = true)
@@ -68,7 +70,7 @@ module body_shell() {
         translate([0, 0, body_h / 2]) rounded_box(body_w, body_d, body_h, 12);
         // Open top, 6 mm bottom, 4 mm rear wall. Electronics insert from above.
         translate([0, -3, body_h / 2 + 5]) rounded_box(body_w - 8, body_d - 8, body_h, 9);
-        // Clearance for two real 42 mm rubber wheels.
+        // Clearance for two real 43 mm rubber wheels.
         for (side = [-1, 1])
             translate([side * (body_w / 2 + 2), 0, wheel_center_z])
                 rotate([0, 90, 0]) cylinder(d = drive_wheel_d + 4, h = 16, center = true);
@@ -99,14 +101,20 @@ module track_cover() {
 
 module n20_motor_clamp() {
     difference() {
-        rounded_box(42, 28, 30, 3);
+        // A raised cradle: base sits at Z=0 and the N20 shaft shares the
+        // 43 mm wheel centreline in this chassis.
+        translate([0, 0, motor_axis_z]) rounded_box(42, 28, 50, 3);
         // N20 motor body and gearbox, axis along X. Use two small cable ties.
-        cube([38.5, 13.4, 11.4], center = true);
-        translate([0, 0, 9]) cube([44, 18, 12], center = true);
+        translate([0, 0, motor_axis_z]) cube([38.5, 13.4, 11.4], center = true);
+        translate([0, 0, motor_axis_z + 9]) cube([44, 18, 12], center = true);
+        // Exit for either left or right 3 mm D-shaft; the printed clamp is
+        // symmetric so one STL serves both sides of the chassis.
+        translate([0, 0, motor_axis_z]) rotate([0, 90, 0]) cylinder(d = 5, h = 48, center = true);
         for (x = [-13, 13])
-            translate([x, 0, 0]) cube([3.5, 32, 4], center = true);
+            translate([x, 0, motor_axis_z]) cube([3.5, 32, 4], center = true);
+        // The base has matching M3 holes at x=+/-80, y=+/-9.
         for (y = [-9, 9])
-            translate([0, y, -10]) m3_hole(8);
+            translate([0, y, 5]) m3_hole(12);
     }
 }
 
@@ -158,29 +166,34 @@ module eye_ring() {
     }
 }
 
-// Holds the 35.7 x 23.9 mm OV2640 board behind one eye. It deliberately has
-// generous clearance for the 24-pin FPC cable and works with a small foam pad.
-module ov2640_camera_mount() {
+// Holds the OV5640 camera board behind the right eye. The 28 x 28 mm cavity
+// leaves 1 mm radial clearance for the seller's supplied camera carrier.
+module ov5640_camera_mount() {
     difference() {
-        rounded_box(46, 8, 34, 3);
-        cube([camera_pcb_w + 1.2, 12, camera_pcb_h + 1.2], center = true);
-        rotate([90, 0, 0]) cylinder(d = 12, h = 14, center = true);
-        for (x = [-18, 18])
-            translate([x, 0, -12]) rotate([90, 0, 0]) m3_hole(14);
+        rounded_box(38, 10, 38, 3);
+        cube([camera_pcb_w + 2, 14, camera_pcb_h + 2], center = true);
+        rotate([90, 0, 0]) cylinder(d = 14, h = 16, center = true);
+        for (x = [-14, 14])
+            translate([x, 0, -14]) rotate([90, 0, 0]) m3_hole(16);
     }
 }
 
-// Cradle for Waveshare ESP32-S3-AUDIO-Board: official envelope is 58 mm x 48.8 mm.
-module audio_core_cradle() {
+// Rectangular cradle for the official Waveshare case. The board slides in
+// from the rear; the 1 mm perimeter allowance avoids a force fit.
+module touch_lcd_cradle() {
     difference() {
-        rotate([90, 0, 0]) cylinder(d = audio_core_d + 5, h = 22, center = true);
-        rotate([90, 0, 0]) cylinder(d = audio_core_d + 1.4, h = 26, center = true);
-        // Open the upper third so the board can be inserted without force.
-        translate([0, 0, 25]) cube([80, 30, 30], center = true);
-        for (x = [-24, 24])
-            translate([x, 0, -20]) rotate([90, 0, 0]) m3_hole(30);
+        rounded_box(touch_lcd_w + 8, touch_lcd_d + 8, touch_lcd_h + 8, 5);
+        translate([0, 0, 3])
+            rounded_box(touch_lcd_w + 2, touch_lcd_d + 2, touch_lcd_h + 8, 4);
+        translate([0, 0, 9]) cube([56, 16, 12], center = true); // cable access
+        for (x = [-46, 46], y = [-30, 30])
+            translate([x, y, 0]) m3_hole(20);
     }
 }
+
+// Compatibility aliases for earlier V2 file names.
+module ov2640_camera_mount() { ov5640_camera_mount(); }
+module audio_core_cradle() { touch_lcd_cradle(); }
 
 module mg90s_servo_cradle() {
     difference() {
@@ -253,6 +266,9 @@ module assembly_preview() {
     color("#b98320") translate([0, 0, 0]) base_plate();
     color("#d7a72a") translate([0, 0, 3]) body_shell();
     for (side = [-1, 1]) {
+        // N20 is mounted with its shaft along X, 25 mm above the base plane.
+        // The bought wheel's 3 mm D-bore shares this exact centreline.
+        color("#707070") translate([side * 80, 0, 0]) n20_motor_clamp();
         color("#242424") translate([side * 99, 0, wheel_center_z])
             rotate([0, 90, 0]) cylinder(d = drive_wheel_d, h = drive_wheel_w, center = true);
         color("#3b3b3b") translate([side * 108, 0, wheel_center_z]) track_cover();
@@ -272,6 +288,8 @@ if (part == "head_shell") head_shell();
 if (part == "face_plate") face_plate();
 if (part == "eye_ring") eye_ring();
 if (part == "ov2640_camera_mount") ov2640_camera_mount();
+if (part == "ov5640_camera_mount") ov5640_camera_mount();
+if (part == "touch_lcd_cradle") touch_lcd_cradle();
 if (part == "audio_core_cradle") audio_core_cradle();
 if (part == "mg90s_servo_cradle") mg90s_servo_cradle();
 if (part == "shoulder_mount") shoulder_mount();
